@@ -1,8 +1,4 @@
-package TestMain;
-
-import Lexer.Lexer;
-import Lexer.Token;
-import Lexer.TokenType;
+package Lexer;
 
 // LexerTest (pruebas del lexer): verifica tokens, posiciones y errores sin usar JUnit.
 public class LexerTest {

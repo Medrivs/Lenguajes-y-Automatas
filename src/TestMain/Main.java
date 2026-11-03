@@ -1,47 +1,56 @@
 package TestMain;
+
 import Lexer.Lexer;
 import Lexer.Token;
 import Lexer.TokenType;
 import Parser.Parser;
-import Parser.Nodo;
+import Parser.ProgramNode;
 
+// Main (inicio de las pruebas): muestra los tokens y comprueba el árbol sintáctico.
 public class Main {
-    private String codigoFuente;
-    
+    private final String sourceCode;
+
+    // Main (constructor): define un programa de ejemplo del lenguaje Pascal Subset.
     public Main() {
-        this.codigoFuente = 
-            "PROGRAM miPrograma; " +
-            "VAR total : INTEGER; " +
-            "BEGIN " +
-            " WHILE total DO "
-           + "total := total + 1 " +
-            "END."; 
+        sourceCode = "PROGRAM Demo;\n" +
+                "VAR\n" +
+                "    counter: INTEGER;\n" +
+                "    ready: BOOLEAN;\n" +
+                "BEGIN\n" +
+                "    counter := 0;\n" +
+                "    ready := TRUE;\n" +
+                "    WHILE (counter < 3) AND ready DO\n" +
+                "    BEGIN\n" +
+                "        counter := counter + 1;\n" +
+                "    END;\n" +
+                "END.";
     }
-    
+
+    // main (método principal): inicia la prueba del compilador.
     public static void main(String[] args) {
-        new Main().run();
+        Main program = new Main();
+        program.run();
     }
-    
+
+    // run (ejecutar prueba): imprime tokens y revisa la estructura del AST.
+    // Aquí NO se ejecutan las sentencias del programa Pascal.
     private void run() {
-        System.out.println("PRUEBA DEL LEXICO");
-        // Instanciamos el primer Lexer solo para imprimir los tokens
-        Lexer lexerPrueba = new Lexer(codigoFuente);
-        Token token = lexerPrueba.nextToken();
-        
-        // Comprobar los tokens
-        while(token.getAtributo() != TokenType.EOF) {
+        System.out.println("LEXER TOKENS");
+        Lexer testLexer = new Lexer(sourceCode);
+        Token token = testLexer.nextToken();
+
+        while (token.getType() != TokenType.EOF) {
             System.out.println(token);
-            token = lexerPrueba.nextToken();
+            token = testLexer.nextToken();
         }
 
-        System.out.println("\nPRUEBA DEL PARSER Y AST");
-        Lexer lexerReal = new Lexer(codigoFuente);
-        
-        Parser parser = new Parser(lexerReal);
-        
-        Nodo arbol = parser.parseProgram();
-        
-        // Evaluamos el árbol sintáctico
-        System.out.println("Resultado de la evaluacion matematica: " + arbol.evaluar());
+        System.out.println("\nPARSER AND AST");
+        Parser parser = new Parser(new Lexer(sourceCode));
+        ProgramNode tree = parser.parseProgram();
+
+        System.out.println("Program: " + tree.getName());
+        System.out.println("Declarations: " + tree.getDeclarations().size());
+        System.out.println("Main block statements: " + tree.getBody().getStatements().size());
+        System.out.println("Syntax is valid. AST built successfully.");
     }
 }
