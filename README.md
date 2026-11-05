@@ -10,6 +10,7 @@ Proyecto académico de **Lenguajes y Autómatas**, desarrollado en Java 21 y Apa
 | B | Lexer, Token y TokenType | [Hito B](docs/hitos/B/README.md) |
 | C | Parser recursivo descendente y AST | [Hito C](docs/hitos/C/README.md) |
 | D | Tabla de símbolos global | [Hito D](docs/hitos/D/README.md) |
+| E | Análisis semántico | [Hito E](docs/hitos/E/README.md) |
 
 Los hitos posteriores contemplan análisis semántico, Visitor/AST decorado, código intermedio de tres direcciones (TAC), optimización, ensamblador y pruebas de integración.
 
