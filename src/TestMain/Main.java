@@ -5,6 +5,8 @@ import Lexer.Token;
 import Lexer.TokenType;
 import Parser.Parser;
 import Parser.ProgramNode;
+import SymbolTable.Symbol;
+import SymbolTable.SymbolTable;
 
 // Main (inicio de las pruebas): muestra los tokens y comprueba el árbol sintáctico.
 public class Main {
@@ -52,5 +54,13 @@ public class Main {
         System.out.println("Declarations: " + tree.getDeclarations().size());
         System.out.println("Main block statements: " + tree.getBody().getStatements().size());
         System.out.println("Syntax is valid. AST built successfully.");
+
+        // Crea la tabla de símbolos con las declaraciones del AST.
+        System.out.println("\nSYMBOL TABLE");
+        SymbolTable table = new SymbolTable(tree);
+        for (Symbol symbol : table.getSymbols()) {
+            System.out.println(symbol);
+        }
+        System.out.println("Registered variables: " + table.size());
     }
 }
