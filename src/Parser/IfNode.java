@@ -1,5 +1,7 @@
 package Parser;
 
+import Visitor.AstVisitor;
+
 // IfNode: representa una sentencia IF con ELSE opcional.
 public class IfNode extends AstNode {
     private final AstNode condition;
@@ -29,4 +31,9 @@ public class IfNode extends AstNode {
         return elseBranch;
     }
 
+    // accept (aceptar visitante): llama al método correspondiente del visitante.
+    @Override
+    public void accept(AstVisitor visitor) {
+        visitor.visit(this);
+    }
 }

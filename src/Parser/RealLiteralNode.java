@@ -1,5 +1,7 @@
 package Parser;
 
+import Visitor.AstVisitor;
+
 // RealLiteralNode: guarda un literal real sin convertirlo todavía.
 public class RealLiteralNode extends AstNode {
     private final String lexeme;
@@ -15,4 +17,9 @@ public class RealLiteralNode extends AstNode {
         return lexeme;
     }
 
+    // accept (aceptar visitante): llama al método correspondiente del visitante.
+    @Override
+    public void accept(AstVisitor visitor) {
+        visitor.visit(this);
+    }
 }

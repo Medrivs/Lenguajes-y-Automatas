@@ -1,5 +1,7 @@
 package Parser;
 
+import Visitor.AstVisitor;
+
 import Lexer.TokenType;
 
 // UnaryOperationNode: representa un operador con un solo operando.
@@ -24,4 +26,9 @@ public class UnaryOperationNode extends AstNode {
         return operand;
     }
 
+    // accept (aceptar visitante): llama al método correspondiente del visitante.
+    @Override
+    public void accept(AstVisitor visitor) {
+        visitor.visit(this);
+    }
 }

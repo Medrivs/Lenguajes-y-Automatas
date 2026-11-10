@@ -1,5 +1,7 @@
 package Parser;
 
+import Visitor.AstVisitor;
+
 import Lexer.TokenType;
 
 // BinaryOperationNode: representa una operación con dos operandos.
@@ -31,4 +33,9 @@ public class BinaryOperationNode extends AstNode {
         return right;
     }
 
+    // accept (aceptar visitante): llama al método correspondiente del visitante.
+    @Override
+    public void accept(AstVisitor visitor) {
+        visitor.visit(this);
+    }
 }

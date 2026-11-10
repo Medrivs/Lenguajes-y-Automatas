@@ -1,5 +1,7 @@
 package Parser;
 
+import Visitor.AstVisitor;
+
 // BooleanLiteralNode: representa un literal TRUE o FALSE.
 public class BooleanLiteralNode extends AstNode {
     private final boolean value;
@@ -15,4 +17,9 @@ public class BooleanLiteralNode extends AstNode {
         return value;
     }
 
+    // accept (aceptar visitante): llama al método correspondiente del visitante.
+    @Override
+    public void accept(AstVisitor visitor) {
+        visitor.visit(this);
+    }
 }

@@ -1,5 +1,7 @@
 package Parser;
 
+import Visitor.AstVisitor;
+
 import java.util.List;
 import Lexer.TokenType;
 
@@ -25,4 +27,9 @@ public class DeclarationNode extends AstNode {
         return declaredType;
     }
 
+    // accept (aceptar visitante): llama al método correspondiente del visitante.
+    @Override
+    public void accept(AstVisitor visitor) {
+        visitor.visit(this);
+    }
 }

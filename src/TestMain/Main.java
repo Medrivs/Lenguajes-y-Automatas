@@ -8,6 +8,7 @@ import Parser.ProgramNode;
 import SymbolTable.Symbol;
 import SymbolTable.SymbolTable;
 import Semantic.SemanticAnalyzer;
+import Visitor.AstPrinterVisitor;
 
 // Main (inicio de las pruebas): muestra los tokens y comprueba el árbol sintáctico.
 public class Main {
@@ -69,5 +70,11 @@ public class Main {
         SemanticAnalyzer analyzer = new SemanticAnalyzer(table);
         analyzer.analyze(tree);
         System.out.println("Análisis semántico finalizado correctamente.");
+
+        // Imprime los tipos que el semántico guardó en los nodos del AST.
+        System.out.println("\nAST DECORADO (VISITOR)");
+        AstPrinterVisitor printer = new AstPrinterVisitor();
+        tree.accept(printer);
+        System.out.print(printer.getText());
     }
 }

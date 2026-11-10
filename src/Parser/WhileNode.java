@@ -1,5 +1,7 @@
 package Parser;
 
+import Visitor.AstVisitor;
+
 // WhileNode: representa un ciclo WHILE.
 public class WhileNode extends AstNode {
     private final AstNode condition;
@@ -22,4 +24,9 @@ public class WhileNode extends AstNode {
         return body;
     }
 
+    // accept (aceptar visitante): llama al método correspondiente del visitante.
+    @Override
+    public void accept(AstVisitor visitor) {
+        visitor.visit(this);
+    }
 }
