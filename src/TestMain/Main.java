@@ -9,6 +9,7 @@ import SymbolTable.Symbol;
 import SymbolTable.SymbolTable;
 import Semantic.SemanticAnalyzer;
 import Visitor.AstPrinterVisitor;
+import IntermediateCode.TacGenerator;
 
 // Main (inicio de las pruebas): muestra los tokens y comprueba el árbol sintáctico.
 public class Main {
@@ -76,5 +77,11 @@ public class Main {
         AstPrinterVisitor printer = new AstPrinterVisitor();
         tree.accept(printer);
         System.out.print(printer.getText());
+
+        // Genera instrucciones TAC a partir del AST ya validado y decorado.
+        System.out.println("\nCÓDIGO INTERMEDIO TAC");
+        TacGenerator generator = new TacGenerator();
+        generator.generate(tree);
+        System.out.print(generator.getText());
     }
 }

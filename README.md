@@ -1,39 +1,46 @@
 # Compilador Pascal Subset v1.0
 
-Proyecto académico de **Lenguajes y Autómatas**, desarrollado en Java 21 y Apache NetBeans. El objetivo es construir un compilador pequeño y completo, desde el análisis léxico hasta la generación de ensamblador NASM x86-64.
+Proyecto académico de **Lenguajes y Autómatas** en **Java 21** y **Apache NetBeans**. El objetivo es crear un compilador para un subconjunto de Pascal, desde la gramática hasta el ensamblador NASM x86-64.
 
-## Documentación por hito
+## Documentación de los hitos
 
-| Hito | Contenido | README |
+| Hito | Tema | Documentación |
 |---|---|---|
-| A | Gramática y contrato del lenguaje | [Hito A](docs/hitos/A/README.md) |
-| B | Lexer, Token y TokenType | [Hito B](docs/hitos/B/README.md) |
-| C | Parser recursivo descendente y AST | [Hito C](docs/hitos/C/README.md) |
-| D | Tabla de símbolos global | [Hito D](docs/hitos/D/README.md) |
-| E | Análisis semántico | [Hito E](docs/hitos/E/README.md) |
-| F | Patrón Visitor y AST decorado | [Hito F](docs/hitos/F/README.md) |
+| A | Gramática Pascal Subset v1.0 | [README](docs/hitos/A/README.md) |
+| B | Lexer y tokens | [README](docs/hitos/B/README.md) |
+| C | Parser recursivo descendente y AST | [README](docs/hitos/C/README.md) |
+| D | Tabla de símbolos global | [README](docs/hitos/D/README.md) |
+| E | Análisis semántico | [README](docs/hitos/E/README.md) |
+| F | Patrón Visitor y AST decorado | [README](docs/hitos/F/README.md) |
+| G | Generación de código intermedio TAC | [README](docs/hitos/G/README.md) |
 
-Los hitos posteriores contemplan código intermedio de tres direcciones (TAC), optimización, ensamblador y pruebas de integración.
+**Hitos pendientes:** H (optimización), I (ensamblador), J (integración y pruebas).
 
-## Reglas de programación
+## Estructura del proyecto
 
-- Clases, variables y métodos en **inglés**.
-- Comentarios breves en **español**, explicando la función de cada método.
-- Implementación Java sencilla: `if`, `switch`, `while`, `for`, listas y mapas.
-- Un mensaje de commit en español después de cada cambio de código.
+- `src/Grammar/`: gramática del lenguaje.
+- `src/Lexer/`: tokens y análisis léxico.
+- `src/Parser/`: parser y nodos del AST.
+- `src/SymbolTable/`: variables declaradas y sus tipos.
+- `src/Semantic/`: validación semántica y decoración.
+- `src/Visitor/`: interfaz y visitantes del AST.
+- `src/IntermediateCode/`: cuádruplos y generación de código TAC.
+- `src/TestMain/`: programa de ejemplo.
+- `test/`: pruebas ejecutables de cada módulo.
+- `docs/hitos/`: explicaciones por etapa.
 
-## Estructura
+## Ejecutar en NetBeans
 
-- `src/Grammar/`: gramática EBNF.
-- `src/Lexer/`: análisis léxico.
-- `src/Parser/`: análisis sintáctico y AST.
-- `src/SymbolTable/`: símbolos y tabla global (Hito D, al incorporar su código).
-- `src/TestMain/`: ejemplo de ejecución.
-- `test/`: pruebas sin JUnit.
-- `docs/hitos/`: README explicativo de cada etapa.
+1. Abre el proyecto y selecciona **JDK 21**.
+2. Ejecuta **Clean and Build**.
+3. Ejecuta `TestMain.Main` para ver tokens, AST, tabla de símbolos, validación, AST decorado y TAC.
+4. Para probar cada módulo, ejecuta `Lexer.LexerTest`, `Parser.ParserTest`, `SymbolTable.SymbolTableTest`, `Semantic.SemanticTest`, `Visitor.VisitorTest` e `IntermediateCode.TacGeneratorTest`.
 
-## Ejecutar
+## Estilo de programación
 
-Abre el proyecto en NetBeans, selecciona **JDK 21**, ejecuta **Clean and Build** y después `TestMain.Main`. Las clases `LexerTest`, `ParserTest` y `SymbolTableTest` (cuando se incorpore el Hito D) tienen su propio método `main` para verificar cada módulo.
+- Nombres de clases, variables y métodos en **inglés**.
+- Comentarios explicativos, errores y salidas en **español**.
+- Java simple: `if`, `while`, `for`, clases, getters, listas, mapas y conjuntos.
+- Mensaje de commit en español para cada cambio.
 
-> La tabla de símbolos no sustituye todavía el análisis semántico completo. La revisión de usos, tipos e inicialización de variables corresponde al siguiente hito.
+> Hito G genera código intermedio TAC, pero todavía no optimiza instrucciones, ejecuta programas Pascal ni emite ensamblador.
