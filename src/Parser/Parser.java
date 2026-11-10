@@ -29,9 +29,9 @@ public class Parser {
 
     // syntaxError (error sintáctico): muestra qué se esperaba y dónde ocurrió.
     private RuntimeException syntaxError(String expected) {
-        return new RuntimeException("Syntax error at line " + current.getLine() +
-                ", column " + current.getColumn() + ": expected " + expected +
-                " but found " + current.getType() + " ('" + current.getLexeme() + "')");
+        return new RuntimeException("Error sintáctico en la línea " + current.getLine() +
+                ", columna " + current.getColumn() + ": se esperaba " + expected +
+                " pero se encontró " + current.getType() + " ('" + current.getLexeme() + "')");
     }
 
     // parseProgram (analizar programa): PROGRAM ID ; block . EOF
@@ -105,7 +105,7 @@ public class Parser {
             match(type);
             return type;
         }
-        throw syntaxError("INTEGER, REAL or BOOLEAN");
+        throw syntaxError("INTEGER, REAL o BOOLEAN");
     }
 
     // parseCompoundStatement (analizar bloque): BEGIN statement_list END.
@@ -142,7 +142,7 @@ public class Parser {
         } else if (current.getType() == TokenType.BEGIN) {
             return parseCompoundStatement();
         }
-        throw syntaxError("ID, IF, WHILE or BEGIN");
+        throw syntaxError("ID, IF, WHILE o BEGIN");
     }
 
     // parseAssignment (analizar asignación): ID := expression.
@@ -279,6 +279,6 @@ public class Parser {
                     token.getLine(), token.getColumn());
         }
 
-        throw syntaxError("ID, INT_LITERAL, FLOAT_LITERAL, TRUE, FALSE, ( or NOT");
+        throw syntaxError("ID, INT_LITERAL, FLOAT_LITERAL, TRUE, FALSE, ( o NOT");
     }
 }

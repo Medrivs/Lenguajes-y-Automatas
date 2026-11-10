@@ -16,7 +16,7 @@ public class ParserTest {
     // check (comprobar): detiene la prueba si una condición no es verdadera.
     private static void check(boolean condition, String description) {
         if (!condition) {
-            throw new RuntimeException("Test failed: " + description);
+            throw new RuntimeException("Prueba fallida: " + description);
         }
         testCount++;
     }
@@ -24,7 +24,7 @@ public class ParserTest {
     // checkValid (programa válido): verifica que el parser acepte el código.
     private static void checkValid(String source) {
         ProgramNode program = parse(source);
-        check(program != null, "Program should be valid: " + source);
+        check(program != null, "El programa debería ser válido: " + source);
     }
 
     // checkInvalid (programa inválido): verifica que se informe un error sintáctico.
@@ -33,17 +33,17 @@ public class ParserTest {
         try {
             parse(source);
         } catch (RuntimeException error) {
-            check(error.getMessage().contains("Syntax error at line "),
-                    "The syntax error must include its position: " + error.getMessage());
+            check(error.getMessage().contains("Error sintáctico en la línea "),
+                    "El error sintáctico debe incluir su ubicación: " + error.getMessage());
             foundError = true;
         }
-        check(foundError, "Program should be rejected: " + source);
+        check(foundError, "El programa debería ser rechazado: " + source);
     }
 
     // checkPosition (comprobar ubicación): revisa línea y columna de un nodo.
     private static void checkPosition(AstNode node, int line, int column) {
         check(node.getLine() == line && node.getColumn() == column,
-                "Expected " + line + ":" + column + " but found " +
+                "Se esperaba " + line + ":" + column + " pero se encontró " +
                 node.getLine() + ":" + node.getColumn());
     }
 
@@ -107,54 +107,54 @@ public class ParserTest {
 
         // Revisamos que las declaraciones y el nombre no desaparezcan del AST.
         ProgramNode declarations = parse("PROGRAM Demo; VAR x, y: INTEGER; rate: REAL; ready: BOOLEAN; BEGIN x := 1; END.");
-        check(declarations.getName().equals("Demo"), "Program name");
-        check(declarations.getDeclarations().size() == 3, "Number of declarations");
-        check(declarations.getDeclarations().get(0).getNames().size() == 2, "Two names in declaration");
-        check(declarations.getDeclarations().get(0).getNames().get(1).equals("y"), "Second variable name");
-        check(declarations.getDeclarations().get(1).getDeclaredType() == TokenType.REAL, "Real declaration");
-        check(declarations.getDeclarations().get(2).getDeclaredType() == TokenType.BOOLEAN, "Boolean declaration");
-        check(declarations.getBody().getStatements().size() == 1, "One statement in body");
+        check(declarations.getName().equals("Demo"), "Nombre del programa");
+        check(declarations.getDeclarations().size() == 3, "Cantidad de declaraciones");
+        check(declarations.getDeclarations().get(0).getNames().size() == 2, "Dos nombres en la declaración");
+        check(declarations.getDeclarations().get(0).getNames().get(1).equals("y"), "Nombre de la segunda variable");
+        check(declarations.getDeclarations().get(1).getDeclaredType() == TokenType.REAL, "Declaración de tipo REAL");
+        check(declarations.getDeclarations().get(2).getDeclaredType() == TokenType.BOOLEAN, "Declaración de tipo BOOLEAN");
+        check(declarations.getBody().getStatements().size() == 1, "Una sentencia en el cuerpo");
 
         // Multiplicación tiene prioridad sobre suma.
         ProgramNode sum = parse("PROGRAM P; BEGIN x := a + b * c END.");
         AssignmentNode sumAssignment = (AssignmentNode) sum.getBody().getStatements().get(0);
         BinaryOperationNode addition = (BinaryOperationNode) sumAssignment.getExpression();
-        check(addition.getOperator() == TokenType.SUM, "Addition at root");
-        check(addition.getLeft() instanceof IdentifierNode, "Addition left side");
+        check(addition.getOperator() == TokenType.SUM, "Suma en la raíz");
+        check(addition.getLeft() instanceof IdentifierNode, "Operando izquierdo de la suma");
         BinaryOperationNode multiplication = (BinaryOperationNode) addition.getRight();
-        check(multiplication.getOperator() == TokenType.MUL, "Multiplication at right");
-        check(((IdentifierNode) multiplication.getRight()).getName().equals("c"), "Identifier name in AST");
+        check(multiplication.getOperator() == TokenType.MUL, "Multiplicación en el operando derecho");
+        check(((IdentifierNode) multiplication.getRight()).getName().equals("c"), "Nombre del identificador en el AST");
 
         // Las restas se agrupan de izquierda a derecha.
         ProgramNode subs = parse("PROGRAM P; BEGIN x := a - b - c END.");
         BinaryOperationNode outerSub = (BinaryOperationNode)
                 ((AssignmentNode) subs.getBody().getStatements().get(0)).getExpression();
-        check(outerSub.getOperator() == TokenType.SUB, "Outer subtraction");
-        check(outerSub.getLeft() instanceof BinaryOperationNode, "Left associativity");
-        check(((BinaryOperationNode) outerSub.getLeft()).getOperator() == TokenType.SUB, "Inner subtraction");
+        check(outerSub.getOperator() == TokenType.SUB, "Resta exterior");
+        check(outerSub.getLeft() instanceof BinaryOperationNode, "Asociatividad por la izquierda");
+        check(((BinaryOperationNode) outerSub.getLeft()).getOperator() == TokenType.SUB, "Resta interior");
 
         // El signo unario se aplica al término completo: -(a * b) + c.
         ProgramNode unary = parse("PROGRAM P; BEGIN x := -a * b + c END.");
         BinaryOperationNode unaryRoot = (BinaryOperationNode)
                 ((AssignmentNode) unary.getBody().getStatements().get(0)).getExpression();
-        check(unaryRoot.getOperator() == TokenType.SUM, "Unary example root");
+        check(unaryRoot.getOperator() == TokenType.SUM, "Raíz del ejemplo unario");
         UnaryOperationNode minus = (UnaryOperationNode) unaryRoot.getLeft();
-        check(minus.getOperator() == TokenType.SUB, "Unary negative operator");
-        check(minus.getOperand() instanceof BinaryOperationNode, "Unary sign covers whole term");
+        check(minus.getOperator() == TokenType.SUB, "Operador unario negativo");
+        check(minus.getOperand() instanceof BinaryOperationNode, "El signo unario abarca todo el término");
         check(((BinaryOperationNode) minus.getOperand()).getOperator() == TokenType.MUL,
-                "Unary sign covers multiplication");
+                "El signo unario abarca la multiplicación");
 
         // NOT pertenece a factor; OR pertenece a simple_expression.
         ProgramNode booleanProgram = parse("PROGRAM P; BEGIN b := NOT FALSE AND TRUE OR FALSE END.");
         BinaryOperationNode boolOr = (BinaryOperationNode)
                 ((AssignmentNode) booleanProgram.getBody().getStatements().get(0)).getExpression();
-        check(boolOr.getOperator() == TokenType.OR, "OR at root");
+        check(boolOr.getOperator() == TokenType.OR, "OR en la raíz");
         BinaryOperationNode boolAnd = (BinaryOperationNode) boolOr.getLeft();
-        check(boolAnd.getOperator() == TokenType.AND, "AND before OR");
+        check(boolAnd.getOperator() == TokenType.AND, "AND tiene prioridad sobre OR");
         UnaryOperationNode boolNot = (UnaryOperationNode) boolAnd.getLeft();
-        check(boolNot.getOperator() == TokenType.NOT, "NOT before AND");
-        check(!((BooleanLiteralNode) boolNot.getOperand()).getValue(), "FALSE literal value");
-        check(((BooleanLiteralNode) boolAnd.getRight()).getValue(), "TRUE literal value");
+        check(boolNot.getOperator() == TokenType.NOT, "NOT tiene prioridad sobre AND");
+        check(!((BooleanLiteralNode) boolNot.getOperand()).getValue(), "Valor del literal FALSE");
+        check(((BooleanLiteralNode) boolAnd.getRight()).getValue(), "Valor del literal TRUE");
 
         // Los textos originales de enteros y reales permanecen en el AST.
         ProgramNode literals = parse("PROGRAM P; BEGIN i := 0001; r := 001.50 END.");
@@ -162,21 +162,21 @@ public class ParserTest {
                 ((AssignmentNode) literals.getBody().getStatements().get(0)).getExpression();
         RealLiteralNode real = (RealLiteralNode)
                 ((AssignmentNode) literals.getBody().getStatements().get(1)).getExpression();
-        check(integer.getLexeme().equals("0001"), "Original integer lexeme");
-        check(real.getLexeme().equals("001.50"), "Original real lexeme");
+        check(integer.getLexeme().equals("0001"), "Lexema original del entero");
+        check(real.getLexeme().equals("001.50"), "Lexema original del real");
 
         // ELSE pertenece al IF más cercano sin ELSE.
         ProgramNode dangling = parse("PROGRAM P; BEGIN IF a THEN IF b THEN x := 1 ELSE x := 2 END.");
         IfNode outerIf = (IfNode) dangling.getBody().getStatements().get(0);
-        check(outerIf.getElseBranch() == null, "Outer IF has no ELSE");
+        check(outerIf.getElseBranch() == null, "El IF exterior no tiene ELSE");
         IfNode innerIf = (IfNode) outerIf.getThenBranch();
-        check(innerIf.getElseBranch() instanceof AssignmentNode, "Inner IF owns ELSE");
+        check(innerIf.getElseBranch() instanceof AssignmentNode, "El ELSE pertenece al IF interior");
 
         // Los bloques pueden ser vacíos; el WHILE guarda su cuerpo sin ejecutarlo.
         ProgramNode nested = parse("PROGRAM P; BEGIN WHILE TRUE DO BEGIN END END.");
         WhileNode whileNode = (WhileNode) nested.getBody().getStatements().get(0);
-        check(whileNode.getBody() instanceof BlockNode, "WHILE has a block");
-        check(((BlockNode) whileNode.getBody()).getStatements().isEmpty(), "Empty nested block");
+        check(whileNode.getBody() instanceof BlockNode, "WHILE contiene un bloque");
+        check(((BlockNode) whileNode.getBody()).getStatements().isEmpty(), "Bloque anidado vacío");
 
         // Las ubicaciones se conservan en el AST.
         ProgramNode positioned = parse("PROGRAM P;\r\nVAR\r\n x: REAL;\r\nBEGIN\r\n x := 1.5;\r\nEND.");
@@ -225,12 +225,12 @@ public class ParserTest {
         // Comprueba que el mensaje señale el símbolo inesperado.
         try {
             parse("PROGRAM P;\nBEGIN\n    x := ;\nEND.");
-            throw new RuntimeException("Expected a syntax error");
+            throw new RuntimeException("Se esperaba un error sintáctico");
         } catch (RuntimeException error) {
-            check(error.getMessage().contains("line 3, column 10"), "Exact error position");
-            check(error.getMessage().contains("SEMICOLON"), "Unexpected token in error");
+            check(error.getMessage().contains("línea 3, columna 10"), "Ubicación exacta del error");
+            check(error.getMessage().contains("SEMICOLON"), "Token inesperado indicado en el error");
         }
 
-        System.out.println("Success: " + testCount + " parser checks passed.");
+        System.out.println("Correcto: " + testCount + " comprobaciones del parser superadas.");
     }
 }

@@ -36,15 +36,15 @@ public class SymbolTable {
         String key = normalizeName(name);
 
         if (key.equals(programName)) {
-            throw new RuntimeException("Semantic error at line " + line +
-                    ", column " + column + ": variable '" + name +
-                    "' cannot have the same name as the program");
+            throw new RuntimeException("Error semántico en la línea " + line +
+                    ", columna " + column + ": la variable '" + name +
+                    "' no puede tener el mismo nombre que el programa");
         }
 
         if (symbols.containsKey(key)) {
-            throw new RuntimeException("Semantic error at line " + line +
-                    ", column " + column + ": variable '" + name +
-                    "' is already declared");
+            throw new RuntimeException("Error semántico en la línea " + line +
+                    ", columna " + column + ": la variable '" + name +
+                    "' ya fue declarada");
         }
 
         symbols.put(key, new Symbol(name, type, line, column));

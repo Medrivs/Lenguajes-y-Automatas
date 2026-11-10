@@ -7,6 +7,7 @@ import Parser.Parser;
 import Parser.ProgramNode;
 import SymbolTable.Symbol;
 import SymbolTable.SymbolTable;
+import Semantic.SemanticAnalyzer;
 
 // Main (inicio de las pruebas): muestra los tokens y comprueba el árbol sintáctico.
 public class Main {
@@ -37,7 +38,7 @@ public class Main {
     // run (ejecutar prueba): imprime tokens y revisa la estructura del AST.
     // Aquí NO se ejecutan las sentencias del programa Pascal.
     private void run() {
-        System.out.println("LEXER TOKENS");
+        System.out.println("TOKENS DEL ANALIZADOR LÉXICO");
         Lexer testLexer = new Lexer(sourceCode);
         Token token = testLexer.nextToken();
 
@@ -46,21 +47,27 @@ public class Main {
             token = testLexer.nextToken();
         }
 
-        System.out.println("\nPARSER AND AST");
+        System.out.println("\nANÁLISIS SINTÁCTICO Y AST");
         Parser parser = new Parser(new Lexer(sourceCode));
         ProgramNode tree = parser.parseProgram();
 
-        System.out.println("Program: " + tree.getName());
-        System.out.println("Declarations: " + tree.getDeclarations().size());
-        System.out.println("Main block statements: " + tree.getBody().getStatements().size());
-        System.out.println("Syntax is valid. AST built successfully.");
+        System.out.println("Programa: " + tree.getName());
+        System.out.println("Declaraciones: " + tree.getDeclarations().size());
+        System.out.println("Sentencias del bloque principal: " + tree.getBody().getStatements().size());
+        System.out.println("Sintaxis válida. AST construido correctamente.");
 
         // Crea la tabla de símbolos con las declaraciones del AST.
-        System.out.println("\nSYMBOL TABLE");
+        System.out.println("\nTABLA DE SÍMBOLOS");
         SymbolTable table = new SymbolTable(tree);
         for (Symbol symbol : table.getSymbols()) {
             System.out.println(symbol);
         }
-        System.out.println("Registered variables: " + table.size());
+        System.out.println("Variables registradas: " + table.size());
+
+        // Revisa que los tipos y usos de las variables sean correctos.
+        System.out.println("\nANÁLISIS SEMÁNTICO");
+        SemanticAnalyzer analyzer = new SemanticAnalyzer(table);
+        analyzer.analyze(tree);
+        System.out.println("Análisis semántico finalizado correctamente.");
     }
 }

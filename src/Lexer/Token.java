@@ -49,6 +49,6 @@ public class Token {
     // toString (convertir a texto): muestra el token para revisar o depurar.
     @Override
     public String toString() {
-        return type + " (" + lexeme + ") - line " + line + ", column " + column;
+        return type + " (" + lexeme + ") - línea " + line + ", columna " + column;
     }
 }

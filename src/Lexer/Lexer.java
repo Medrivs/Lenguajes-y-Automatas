@@ -238,8 +238,8 @@ public class Lexer {
                     character = "\\0";
                 }
                 // Error léxico: un carácter no pertenece a nuestro lenguaje.
-                throw new RuntimeException("Lexical error at line " + line +
-                        ", column " + column + ": invalid character '" + character + "'");
+                throw new RuntimeException("Error léxico en la línea " + line +
+                        ", columna " + column + ": carácter no válido '" + character + "'");
         }
     }
 }

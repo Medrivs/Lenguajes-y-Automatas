@@ -11,13 +11,13 @@ public class LexerTest {
         for (TokenType expectedType : expectedTypes) {
             Token token = lexer.nextToken();
             if (token.getType() != expectedType) {
-                throw new RuntimeException("Expected " + expectedType + " but found " + token);
+                throw new RuntimeException("Se esperaba " + expectedType + " pero se encontró " + token);
             }
             testCount++;
         }
 
         if (lexer.nextToken().getType() != TokenType.EOF) {
-            throw new RuntimeException("Unexpected extra tokens: " + source);
+            throw new RuntimeException("Se encontraron tokens adicionales inesperados: " + source);
         }
         testCount++;
     }
@@ -26,7 +26,7 @@ public class LexerTest {
     private static void checkPosition(String source, int line, int column) {
         Token token = new Lexer(source).nextToken();
         if (token.getLine() != line || token.getColumn() != column) {
-            throw new RuntimeException("Wrong token position: " + token);
+            throw new RuntimeException("Ubicación incorrecta del token: " + token);
         }
         testCount++;
     }
@@ -42,15 +42,15 @@ public class LexerTest {
                 token = lexer.nextToken();
             }
         } catch (RuntimeException error) {
-            String location = "line " + line + ", column " + column;
+            String location = "línea " + line + ", columna " + column;
             if (!error.getMessage().contains(location)) {
-                throw new RuntimeException("Wrong error position: " + error.getMessage());
+                throw new RuntimeException("Ubicación incorrecta del error: " + error.getMessage());
             }
             foundError = true;
         }
 
         if (!foundError) {
-            throw new RuntimeException("Expected lexical error: " + source);
+            throw new RuntimeException("Se esperaba un error léxico: " + source);
         }
         testCount++;
     }
@@ -99,12 +99,12 @@ public class LexerTest {
 
         Token token = new Lexer("bEgIn").nextToken();
         if (!token.getLexeme().equals("bEgIn") || token.getType() != TokenType.BEGIN) {
-            throw new RuntimeException("Original token text was lost");
+            throw new RuntimeException("Se perdió el texto original del token");
         }
         testCount++;
 
         if (!new Lexer("Variable").nextToken().getValue().equals("Variable")) {
-            throw new RuntimeException("getValue() stopped working");
+            throw new RuntimeException("getValue() dejó de funcionar");
         }
         testCount++;
 
@@ -116,10 +116,10 @@ public class LexerTest {
         checkError("{comment}", 1, 1);
 
         if (TokenType.values().length != 38) {
-            throw new RuntimeException("Expected 38 token types");
+            throw new RuntimeException("Se esperaban 38 tipos de token");
         }
         testCount++;
 
-        System.out.println("Success: " + testCount + " lexer checks passed.");
+        System.out.println("Correcto: " + testCount + " comprobaciones del lexer superadas.");
     }
 }

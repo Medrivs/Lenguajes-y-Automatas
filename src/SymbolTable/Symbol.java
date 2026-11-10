@@ -40,6 +40,6 @@ public class Symbol {
     // toString (convertir a texto): muestra los datos del símbolo para las pruebas.
     @Override
     public String toString() {
-        return name + " : " + type + " (line " + line + ", column " + column + ")";
+        return name + " : " + type + " (línea " + line + ", columna " + column + ")";
     }
 }
