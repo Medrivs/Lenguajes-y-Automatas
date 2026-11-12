@@ -10,6 +10,9 @@ import SymbolTable.SymbolTable;
 import Semantic.SemanticAnalyzer;
 import Visitor.AstPrinterVisitor;
 import IntermediateCode.TacGenerator;
+import IntermediateCode.TacInstruction;
+import IntermediateCode.TacOptimizer;
+import java.util.List;
 
 // Main (inicio de las pruebas): muestra los tokens y comprueba el árbol sintáctico.
 public class Main {
@@ -22,7 +25,7 @@ public class Main {
                 "    counter: INTEGER;\n" +
                 "    ready: BOOLEAN;\n" +
                 "BEGIN\n" +
-                "    counter := 0;\n" +
+                "    counter := 2 * 3 - 6;\n" +
                 "    ready := TRUE;\n" +
                 "    WHILE (counter < 3) AND ready DO\n" +
                 "    BEGIN\n" +
@@ -83,5 +86,13 @@ public class Main {
         TacGenerator generator = new TacGenerator();
         generator.generate(tree);
         System.out.print(generator.getText());
+
+        // Optimiza el TAC sin cambiar el programa ni sus instrucciones originales.
+        System.out.println("\nCÓDIGO INTERMEDIO TAC OPTIMIZADO");
+        TacOptimizer optimizer = new TacOptimizer();
+        List<TacInstruction> optimized = optimizer.optimize(generator.getCode());
+        for (TacInstruction instruction : optimized) {
+            System.out.println(instruction);
+        }
     }
 }

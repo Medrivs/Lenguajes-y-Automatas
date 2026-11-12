@@ -13,8 +13,9 @@ Proyecto académico de **Lenguajes y Autómatas** en **Java 21** y **Apache NetB
 | E | Análisis semántico | [README](docs/hitos/E/README.md) |
 | F | Patrón Visitor y AST decorado | [README](docs/hitos/F/README.md) |
 | G | Generación de código intermedio TAC | [README](docs/hitos/G/README.md) |
+| H | Optimización de código intermedio TAC | [README](docs/hitos/H/README.md) |
 
-**Hitos pendientes:** H (optimización), I (ensamblador), J (integración y pruebas).
+**Hitos pendientes:** I (ensamblador), J (integración y pruebas).
 
 ## Estructura del proyecto
 
@@ -24,7 +25,7 @@ Proyecto académico de **Lenguajes y Autómatas** en **Java 21** y **Apache NetB
 - `src/SymbolTable/`: variables declaradas y sus tipos.
 - `src/Semantic/`: validación semántica y decoración.
 - `src/Visitor/`: interfaz y visitantes del AST.
-- `src/IntermediateCode/`: cuádruplos y generación de código TAC.
+- `src/IntermediateCode/`: cuádruplos, generador y optimizador TAC.
 - `src/TestMain/`: programa de ejemplo.
 - `test/`: pruebas ejecutables de cada módulo.
 - `docs/hitos/`: explicaciones por etapa.
