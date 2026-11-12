@@ -1,6 +1,6 @@
 # Compilador Pascal Subset v1.0
 
-Proyecto académico de **Lenguajes y Autómatas** en **Java 21** y **Apache NetBeans**. El objetivo es crear un compilador para un subconjunto de Pascal, desde la gramática hasta el ensamblador NASM x86-64.
+Proyecto académico de **Lenguajes y Autómatas** desarrollado en **Java 21** y **Apache NetBeans**. El compilador transforma un subconjunto de Pascal en código intermedio de tres direcciones (TAC), lo optimiza y genera **ensamblador NASM para Linux x86-64**.
 
 ## Documentación de los hitos
 
@@ -14,34 +14,37 @@ Proyecto académico de **Lenguajes y Autómatas** en **Java 21** y **Apache NetB
 | F | Patrón Visitor y AST decorado | [README](docs/hitos/F/README.md) |
 | G | Generación de código intermedio TAC | [README](docs/hitos/G/README.md) |
 | H | Optimización de código intermedio TAC | [README](docs/hitos/H/README.md) |
+| I | Generación de ensamblador NASM Linux x86-64 | [README](docs/hitos/I/README.md) |
 
-**Hitos pendientes:** I (ensamblador), J (integración y pruebas).
+**Hito pendiente:** J — Integración final y pruebas de extremo a extremo.
 
 ## Estructura del proyecto
 
-- `src/Grammar/`: gramática del lenguaje.
-- `src/Lexer/`: tokens y análisis léxico.
-- `src/Parser/`: parser y nodos del AST.
-- `src/SymbolTable/`: variables declaradas y sus tipos.
-- `src/Semantic/`: validación semántica y decoración.
-- `src/Visitor/`: interfaz y visitantes del AST.
-- `src/IntermediateCode/`: cuádruplos, generador y optimizador TAC.
-- `src/TestMain/`: programa de ejemplo.
-- `test/`: pruebas ejecutables de cada módulo.
-- `docs/hitos/`: explicaciones por etapa.
+- `src/Grammar/`: contrato y gramática EBNF.
+- `src/Lexer/`: tokens y analizador léxico.
+- `src/Parser/`: analizador sintáctico y nodos AST.
+- `src/SymbolTable/`: registro de símbolos y tipos globales.
+- `src/Semantic/`: verificación de tipos e inicializaciones.
+- `src/Visitor/`: patrón Visitor y presentación del AST decorado.
+- `src/IntermediateCode/`: generación y optimización de TAC.
+- `src/ObjectCode/`: generación de ensamblador NASM x86-64.
+- `src/TestMain/`: demostración de la cadena completa.
+- `test/`: clases de prueba autónomas, sin JUnit.
+- `docs/hitos/`: documentación por etapa.
 
-## Ejecutar en NetBeans
+## Ejecutar desde NetBeans
 
-1. Abre el proyecto y selecciona **JDK 21**.
+1. Abre el proyecto con **JDK 21**.
 2. Ejecuta **Clean and Build**.
-3. Ejecuta `TestMain.Main` para ver tokens, AST, tabla de símbolos, validación, AST decorado y TAC.
-4. Para probar cada módulo, ejecuta `Lexer.LexerTest`, `Parser.ParserTest`, `SymbolTable.SymbolTableTest`, `Semantic.SemanticTest`, `Visitor.VisitorTest` e `IntermediateCode.TacGeneratorTest`.
+3. Ejecuta `TestMain.Main`: verás tokens, AST, símbolos, análisis semántico, AST decorado, TAC original, TAC optimizado y NASM.
+4. El ensamblador se guarda automáticamente en **`build/programa.asm`**; no necesitas terminal para generarlo.
+5. Ejecuta `ObjectCode.NasmGeneratorTest` y las suites anteriores con **Run File**.
 
-## Estilo de programación
+Para ensamblar y ejecutar el archivo `.asm` necesitas **Linux x86-64 o WSL con NASM y `ld`**. El lenguaje no incluye impresión en pantalla, por lo que el ejecutable termina con código de salida `0` sin mostrar valores. Consulta [Hito I](docs/hitos/I/README.md).
 
-- Nombres de clases, variables y métodos en **inglés**.
-- Comentarios explicativos, errores y salidas en **español**.
-- Java simple: `if`, `while`, `for`, clases, getters, listas, mapas y conjuntos.
-- Mensaje de commit en español para cada cambio.
+## Convenciones de programación
 
-> Hito G genera código intermedio TAC, pero todavía no optimiza instrucciones, ejecuta programas Pascal ni emite ensamblador.
+- Clases, variables y métodos escritos en **inglés**.
+- Comentarios breves, mensajes y documentación en **español**.
+- Implementación Java sencilla: `if`, `switch`, `for`, listas, mapas y conjuntos.
+- Cada cambio de código lleva un mensaje de commit en español.

@@ -12,7 +12,11 @@ import Visitor.AstPrinterVisitor;
 import IntermediateCode.TacGenerator;
 import IntermediateCode.TacInstruction;
 import IntermediateCode.TacOptimizer;
+import ObjectCode.NasmGenerator;
 import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Files;
+import java.io.IOException;
 
 // Main (inicio de las pruebas): muestra los tokens y comprueba el árbol sintáctico.
 public class Main {
@@ -93,6 +97,23 @@ public class Main {
         List<TacInstruction> optimized = optimizer.optimize(generator.getCode());
         for (TacInstruction instruction : optimized) {
             System.out.println(instruction);
+        }
+
+        // Traduce el TAC optimizado a ensamblador NASM para Linux x86-64.
+        System.out.println("\nCÓDIGO OBJETO NASM x86-64");
+        NasmGenerator nasm = new NasmGenerator();
+        nasm.generate(optimized, table);
+        System.out.print(nasm.getText());
+
+        // Guarda un .asm listo para NASM dentro de la carpeta generada build.
+        // No utiliza la terminal ni modifica los archivos fuente del proyecto.
+        Path output = Path.of("build", "programa.asm");
+        try {
+            Files.createDirectories(output.getParent());
+            nasm.writeFile(output);
+            System.out.println("Archivo NASM guardado en: " + output.toAbsolutePath());
+        } catch (IOException exception) {
+            System.out.println("No se pudo guardar el archivo NASM: " + exception.getMessage());
         }
     }
 }
